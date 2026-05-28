@@ -7,7 +7,7 @@ function UserProvider({ children }) {
   
   // Ambil tema terakhir yang disimpan di browser, default-nya light
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'light'
+    return localStorage.getItem('theme') || 'dark'
   })
 
   // Sinkronisasikan tema ke tag HTML dan simpan di localStorage
