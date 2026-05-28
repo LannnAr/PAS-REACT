@@ -150,7 +150,7 @@ function getBotResponse(user, message) {
   }
 
   // 21. Tanya "selamat ulang tahun" atau ucapan khusus
-  if (/\b(ulang tahun|birthday|selamat|ucapan|congrats|congratulation)\b/.test(msg)) {
+  if (/\b(ulang tahun|selamat|ucapan|congrats|congratulation)\b/.test(msg)) {
     return `Wah, terima kasih banyak! Sangat appreciate 🎂 Semoga kamu juga selalu sehat dan bahagia ya! 🥳`
   }
 
