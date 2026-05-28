@@ -21,17 +21,22 @@ function AppContent() {
           throw new Error(`HTTP ${response.status}`)
         }
         const data = await response.json()
-        setUsers(data)
+        
+        // --- TAMBAHKAN DELAY BUATAN DI SINI ---
+        // Kita tahan datanya selama 2 detik (2000 milidetik) baru ditampilkan
+        setTimeout(() => {
+          setUsers(data)
+          setLoading(false)
+        }, 1000)
+
       } catch (err) {
         setError('Gagal mengambil data user. Silakan coba lagi.')
-      } finally {
         setLoading(false)
       }
     }
 
     loadUsers()
   }, [])
-
   const filteredUsers = showAll 
     ? users 
     : users.filter((user) => {
@@ -65,7 +70,12 @@ function AppContent() {
 
       <section className="user-grid">
         {loading ? (
-          <div className="empty-state">Sedang memuat data...</div>
+          /* Render 6 skeleton cards saat data masih di-fetch */
+          <>
+            {[1, 2, 3, 4, 5, 6].map((n) => (
+              <SkeletonCard key={n} />
+            ))}
+          </>
         ) : showAll || searchTerm.trim() !== '' ? (
           filteredUsers.length > 0 ? (
             filteredUsers.map((user) => <UserCard key={user.id} user={user} />)
@@ -89,5 +99,5 @@ function App() {
     </UserProvider>
   )
 }
-
+import SkeletonCard from './components/SkeletonCard'
 export default App

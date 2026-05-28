@@ -3,7 +3,7 @@ import UserContext from './UserContext'
 
 function UserProvider({ children }) {
   const [searchTerm, setSearchTerm] = useState('')
-  const [showAll, setShowAll] = useState(false)
+  const [showAll, setShowAll] = useState(true)
 
   return (
     <UserContext.Provider value={{ searchTerm, setSearchTerm, showAll, setShowAll }}>

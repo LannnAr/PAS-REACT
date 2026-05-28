@@ -9,6 +9,20 @@ function Navbar() {
     searchRef.current?.focus()
   }, [])
 
+  // 1. TAMBAHAN BARU: Fungsi untuk menangani ketikan secara langsung (Real-time)
+  const handleLiveSearch = (e) => {
+    const value = e.target.value
+    setSearchTerm(value) // Langsung simpan huruf yang diketik ke state pencarian
+    
+    // Jika input tidak kosong, matikan mode "Tampilkan Semua" agar filter berjalan
+    if (value.trim() !== '') {
+      setShowAll(false)
+    } else {
+      // Jika input dihapus sampai kosong, kembalikan ke mode nampilin semua data
+      setShowAll(true) 
+    }
+  }
+
   const handleSearch = () => {
     const value = searchRef.current?.value.trim() ?? ''
     setSearchTerm(value)
@@ -19,7 +33,7 @@ function Navbar() {
     if (!searchRef.current) return
     searchRef.current.value = ''
     setSearchTerm('')
-    setShowAll(false)
+    setShowAll(true) // Sesuaikan agar saat clear, balik menampilkan semua data
     searchRef.current.focus()
   }
 
@@ -43,6 +57,7 @@ function Navbar() {
           ref={searchRef}
           placeholder="Search user..."
           aria-label="Search user"
+          onChange={handleLiveSearch} /* 2. TAMBAHAN BARU: Panggil fungsi di sini */
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
         <button type="button" onClick={handleSearch}>
