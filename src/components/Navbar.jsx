@@ -2,24 +2,20 @@ import { useContext, useEffect, useRef } from 'react'
 import UserContext from '../context/UserContext'
 
 function Navbar() {
-  const { setSearchTerm, showAll, setShowAll } = useContext(UserContext)
+  const { setSearchTerm, showAll, setShowAll, theme, toggleTheme } = useContext(UserContext)
   const searchRef = useRef(null)
 
   useEffect(() => {
     searchRef.current?.focus()
   }, [])
 
-  // 1. TAMBAHAN BARU: Fungsi untuk menangani ketikan secara langsung (Real-time)
   const handleLiveSearch = (e) => {
     const value = e.target.value
-    setSearchTerm(value) // Langsung simpan huruf yang diketik ke state pencarian
-    
-    // Jika input tidak kosong, matikan mode "Tampilkan Semua" agar filter berjalan
+    setSearchTerm(value)
     if (value.trim() !== '') {
       setShowAll(false)
     } else {
-      // Jika input dihapus sampai kosong, kembalikan ke mode nampilin semua data
-      setShowAll(true) 
+      setShowAll(true)
     }
   }
 
@@ -33,7 +29,7 @@ function Navbar() {
     if (!searchRef.current) return
     searchRef.current.value = ''
     setSearchTerm('')
-    setShowAll(true) // Sesuaikan agar saat clear, balik menampilkan semua data
+    setShowAll(true)
     searchRef.current.focus()
   }
 
@@ -57,7 +53,7 @@ function Navbar() {
           ref={searchRef}
           placeholder="Search user..."
           aria-label="Search user"
-          onChange={handleLiveSearch} /* 2. TAMBAHAN BARU: Panggil fungsi di sini */
+          onChange={handleLiveSearch}
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
         <button type="button" onClick={handleSearch}>
@@ -68,6 +64,11 @@ function Navbar() {
         </button>
         <button type="button" className={showAll ? 'primary active' : 'primary'} onClick={handleShowAll}>
           {showAll ? 'Sembunyikan' : 'Tampilkan Semua Data'}
+        </button>
+        
+        {/* Tombol Toggle Tema Baru */}
+        <button type="button" className="secondary" onClick={toggleTheme} style={{ borderRadius: '50%', padding: '10px 14px' }}>
+          {theme === 'light' ? '🌙' : '🌞'}
         </button>
       </div>
     </header>

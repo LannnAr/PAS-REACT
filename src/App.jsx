@@ -80,7 +80,7 @@ function AppContent() {
           filteredUsers.length > 0 ? (
             filteredUsers.map((user) => <UserCard key={user.id} user={user} />)
           ) : (
-            <div className="empty-state">Tidak ada user yang cocok.</div>
+            <NotFound searchTerm={searchTerm} />
           )
         ) : (
           <div className="empty-state">Klik tombol "Tampilkan Semua Data" atau masukkan kata kunci untuk mencari user.</div>
@@ -101,3 +101,4 @@ function App() {
 }
 import SkeletonCard from './components/SkeletonCard'
 export default App
+import NotFound from './components/NotFound'

@@ -5,6 +5,8 @@ const UserContext = createContext({
   setSearchTerm: () => {},
   showAll: false,
   setShowAll: () => {},
+  theme: 'light',      // Tambahan baru
+  toggleTheme: () => {} // Tambahan baru
 })
 
 export default UserContext
