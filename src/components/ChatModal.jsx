@@ -8,7 +8,7 @@ function getBotResponse(user, message) {
   const msg = message.toLowerCase().trim()
 
   // 1. Sapaan
-  if (/\b(halo|hai|hi|hey|hei|selamat|pagi|siang|malam)\b/.test(msg)) {
+  if (/\b(halo|hai|hi|hey|helo|hello|hallo|haii|hei|selamat|pagi|siang|malam)\b/.test(msg)) {
     const greetings = [
       `Halo! 👋 Senang kamu menyapa saya, ${user.name} di sini!`,
       `Hai! 😊 Saya ${user.name}, ada yang bisa saya bantu?`,
