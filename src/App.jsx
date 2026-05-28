@@ -10,7 +10,7 @@ function AppContent() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const { searchTerm } = useContext(UserContext)
+  const { searchTerm, showAll } = useContext(UserContext)
 
   useEffect(() => {
     async function loadUsers() {
@@ -32,7 +32,9 @@ function AppContent() {
     loadUsers()
   }, [])
 
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = showAll 
+    ? users 
+    : users.filter((user) => {
     const query = searchTerm.trim().toLowerCase()
     return (
       user.name.toLowerCase().includes(query) ||
@@ -46,14 +48,16 @@ function AppContent() {
       <Navbar />
       <section className="summary">
         <p>
-          {searchTerm
+          {showAll
+            ? 'Menampilkan semua data user'
+            : searchTerm
             ? `Pencarian: "${searchTerm}"` 
             : 'Data User diambil dari API https://jsonplaceholder.typicode.com/users'}
         </p>
         <p>
           {loading
             ? 'Memuat data...'
-            : error || (searchTerm.trim() ? `${filteredUsers.length} user ditemukan.` : 'Masukkan kata kunci untuk mencari user.')}
+            : error || (showAll ? `Total ${filteredUsers.length} user.` : (searchTerm.trim() ? `${filteredUsers.length} user ditemukan.` : 'Klik tombol "Tampilkan Semua Data" atau masukkan kata kunci untuk mencari user.'))}
         </p>
       </section>
 
@@ -62,12 +66,14 @@ function AppContent() {
       <section className="user-grid">
         {loading ? (
           <div className="empty-state">Sedang memuat data...</div>
-        ) : searchTerm.trim() === '' ? (
-          <div className="empty-state">Silakan masukkan kata kunci dan tekan Search untuk menampilkan user.</div>
-        ) : filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => <UserCard key={user.id} user={user} />)
+        ) : showAll || searchTerm.trim() !== '' ? (
+          filteredUsers.length > 0 ? (
+            filteredUsers.map((user) => <UserCard key={user.id} user={user} />)
+          ) : (
+            <div className="empty-state">Tidak ada user yang cocok.</div>
+          )
         ) : (
-          <div className="empty-state">Tidak ada user yang cocok.</div>
+          <div className="empty-state">Klik tombol "Tampilkan Semua Data" atau masukkan kata kunci untuk mencari user.</div>
         )}
       </section>
 

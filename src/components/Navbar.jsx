@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from 'react'
 import UserContext from '../context/UserContext'
 
 function Navbar() {
-  const { setSearchTerm } = useContext(UserContext)
+  const { setSearchTerm, showAll, setShowAll } = useContext(UserContext)
   const searchRef = useRef(null)
 
   useEffect(() => {
@@ -12,13 +12,23 @@ function Navbar() {
   const handleSearch = () => {
     const value = searchRef.current?.value.trim() ?? ''
     setSearchTerm(value)
+    setShowAll(false)
   }
 
   const handleClear = () => {
     if (!searchRef.current) return
     searchRef.current.value = ''
     setSearchTerm('')
+    setShowAll(false)
     searchRef.current.focus()
+  }
+
+  const handleShowAll = () => {
+    setShowAll(!showAll)
+    if (!showAll) {
+      searchRef.current.value = ''
+      setSearchTerm('')
+    }
   }
 
   return (
@@ -40,6 +50,9 @@ function Navbar() {
         </button>
         <button type="button" className="secondary" onClick={handleClear}>
           Clear
+        </button>
+        <button type="button" className={showAll ? 'primary active' : 'primary'} onClick={handleShowAll}>
+          {showAll ? 'Sembunyikan' : 'Tampilkan Semua Data'}
         </button>
       </div>
     </header>
