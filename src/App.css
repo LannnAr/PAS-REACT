@@ -2,7 +2,7 @@
   max-width: 1180px;
   width: min(100%, 1180px);
   margin: 0 auto;
-  padding: 24px 20px 40px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
