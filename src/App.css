@@ -192,3 +192,93 @@ button.active {
     width: 100%;
   }
 }
+
+/* --- Styling Avatar & Header Card --- */
+.user-card__profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--accent-border);
+}
+
+.user-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--code-bg);
+  border: 2px solid var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.user-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-card__header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--text-h);
+  line-height: 1.2;
+}
+
+.user-card__header span {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* --- Merapikan Jarak Info Text --- */
+.user-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.user-card__body p {
+  margin: 0;
+  font-size: 14.5px;
+}
+
+/* --- Styling Button Biar Lebih Modern --- */
+.user-card__actions button {
+  flex: 1; /* Biar tombolnya otomatis bagi rata lebarnya */
+  border-radius: 20px; /* Bikin bentuk tombol jadi kapsul melengkung */
+  padding: 10px 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.user-card__actions button.primary {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-color: var(--accent-border);
+}
+
+.user-card__actions button.primary.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.user-card__actions button.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.user-card__actions button.secondary.active {
+  background: var(--text-h);
+  color: var(--bg);
+  border-color: var(--text-h);
+}
+
+.user-card__actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
