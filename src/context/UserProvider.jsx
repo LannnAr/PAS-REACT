@@ -4,8 +4,8 @@ import UserContext from './UserContext'
 function UserProvider({ children }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [showAll, setShowAll] = useState(true)
-  
-  // Ambil tema terakhir yang disimpan di browser, default-nya light
+
+  // FIX: komentar diperbaiki — default tema adalah 'dark', bukan 'light'
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'dark'
   })

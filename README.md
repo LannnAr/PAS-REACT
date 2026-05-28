@@ -64,55 +64,102 @@ Proyek ini saya bagi menjadi beberapa struktur file yang rapi:
 Berikut adalah gabungan potongan kode kunci yang menggerakkan seluruh logika utama di dalam program yang saya bangun:
 
 ```js
-// 1. Pengambilan Data Asynchronous & Kontrol State Loading
+// 1. Pengambilan Data Asynchronous & Kontrol State Loading (App.jsx)
 useEffect(() => {
   async function loadUsers() {
     try {
-      setLoading(true); // Memicu komponen Skeleton untuk merender kartu tiruan
-      const response = await fetch('[https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users)');
-      const data = await response.json();
-      setUsers(data);   // Menyimpan hasil fetch data user ke state
+      setLoading(true) // Memicu komponen Skeleton untuk merender kartu tiruan
+      const response = await fetch('https://jsonplaceholder.typicode.com/users')
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`)
+      }
+      const data = await response.json()
+
+      // Delay buatan agar skeleton loading terlihat
+      setTimeout(() => {
+        setUsers(data)      // Menyimpan hasil fetch ke state
+        setLoading(false)   // Menghentikan mode loading
+      }, 1000)
+
     } catch (err) {
-      setError('Gagal mengambil data user.');
-    } finally {
-      setLoading(false); // Menghentikan mode loading dan mengganti Skeleton dengan data asli
+      setError('Gagal mengambil data user. Silakan coba lagi.')
+      setLoading(false)
     }
   }
-  loadUsers();
-}, []);
 
-// 2. Kondisional Rendering untuk Skeleton Loading di UI
-if (loading) {
-  // Merender komponen kartu tiruan berulang kali selama data masih di-fetch
-  return <div className="user-grid">{[...Array(6)].map((_, i) => <SkeletonCard key="{i}"/>)}</div>;
+  loadUsers()
+}, [])
+
+
+// 2. Kondisional Rendering untuk Skeleton Loading di UI (App.jsx)
+{loading ? (
+  // Merender 6 kartu tiruan selama data masih di-fetch
+  [1, 2, 3, 4, 5, 6].map((n) => <SkeletonCard key={n} />)
+) : (
+  filteredUsers.map((user, index) => (
+    <UserCard key={user.id} user={user} index={index} />
+  ))
+)}
+
+
+// 3. Logika Pencarian Real-time (Navbar.jsx)
+const handleLiveSearch = (e) => {
+  const value = e.target.value
+  setSearchTerm(value) // Mengirim huruf yang diketik langsung ke global Context
+
+  if (value.trim() !== '') {
+    setShowAll(false) // Mematikan mode tampilkan semua agar filter pencarian berjalan
+  } else {
+    setShowAll(true)  // Jika input kosong, kembalikan ke mode tampilkan semua data
+  }
 }
 
-// 3. Logika Pencarian Real-time di Navbar.jsx
-const handleLiveSearch = (e) => {
-  const value = e.target.value;
-  setSearchTerm(value); // Mengirim huruf yang diketik langsung ke global Context
-  
-  if (value.trim() !== '') {
-    setShowAll(false); // Mematikan mode tampilkan semua agar filter pencarian berjalan
-  } else {
-    setShowAll(true);  // Jika input kosong, kembalikan ke mode nampilin semua data
-  }
-};
 
-// 4. Fitur Switcher Tema Gelap / Terang (Dark & Light Mode)
+// 4. Fitur Switcher Tema Gelap / Terang (UserProvider.jsx)
 const toggleTheme = () => {
-  const newTheme = theme === 'light' ? 'dark' : 'light';
-  setTheme(newTheme);
-  document.documentElement.setAttribute('data-theme', newTheme); // Mengubah atribut root HTML/CSS
-};
+  setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+}
 
-// 5. Pemicu (Trigger) Jendela Modal Pop-up di UserCard.jsx
-<div className="user-card__clickable" onClick={() => setSelectedUser(user)}>
-  <div className="user-card__profile">
-    <img src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username}`} alt={user.name} />
-    <h3>{user.name}</h3>
-    <p>@{user.username}</p>
-  </div>
+useEffect(() => {
+  localStorage.setItem('theme', theme) // Simpan pilihan tema ke browser
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
+}, [theme])
+
+
+// 5. Tombol Like & Follow dengan State Lokal (UserCard.jsx)
+const [liked, setLiked] = useState(false)
+const [followed, setFollowed] = useState(false)
+
+<button onClick={() => setLiked((prev) => !prev)}>
+  {liked ? '❤️ Liked' : '🤍 Like'}
+</button>
+<button onClick={() => setFollowed((prev) => !prev)}>
+  {followed ? '✓ Following' : '+ Follow'}
+</button>
+
+
+// 6. Membuka Modal Pop-up saat Kartu Diklik (UserCard.jsx)
+const [showModal, setShowModal] = useState(false)
+
+<div className="user-card__clickable" onClick={() => setShowModal(true)}>
+  ...
 </div>
+
+{showModal && <UserModal user={user} onClose={() => setShowModal(false)} />}
+
+
+// 7. useRef untuk Auto-Focus Input Pencarian (Navbar.jsx)
+const searchRef = useRef(null)
+
+useEffect(() => {
+  searchRef.current?.focus() // Otomatis fokus ke input saat halaman pertama dibuka
+}, [])
+
+<input type="text" ref={searchRef} placeholder="Search user..." />
+```
 
 sekian dari saya terimakasih

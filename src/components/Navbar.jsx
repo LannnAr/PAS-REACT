@@ -36,7 +36,8 @@ function Navbar() {
   const handleShowAll = () => {
     setShowAll(!showAll)
     if (!showAll) {
-      searchRef.current.value = ''
+      // FIX: tambah pengecekan agar tidak error jika ref belum siap
+      if (searchRef.current) searchRef.current.value = ''
       setSearchTerm('')
     }
   }
@@ -65,8 +66,8 @@ function Navbar() {
         <button type="button" className={showAll ? 'primary active' : 'primary'} onClick={handleShowAll}>
           {showAll ? 'Sembunyikan' : 'Tampilkan Semua Data'}
         </button>
-        
-        {/* Tombol Toggle Tema Baru */}
+
+        {/* Tombol Toggle Tema */}
         <button type="button" className="secondary" onClick={toggleTheme} style={{ borderRadius: '50%', padding: '10px 14px' }}>
           {theme === 'light' ? '🌙' : '🌞'}
         </button>

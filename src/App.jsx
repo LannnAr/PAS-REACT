@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from 'react'
 import './App.css'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
+import NotFound from './components/NotFound'
+import SkeletonCard from './components/SkeletonCard'
 import UserCard from './components/UserCard'
 import UserContext from './context/UserContext'
 import UserProvider from './context/UserProvider'
@@ -21,9 +23,8 @@ function AppContent() {
           throw new Error(`HTTP ${response.status}`)
         }
         const data = await response.json()
-        
-        // --- TAMBAHKAN DELAY BUATAN DI SINI ---
-        // Kita tahan datanya selama 2 detik (2000 milidetik) baru ditampilkan
+
+        // Delay buatan agar skeleton loading terlihat
         setTimeout(() => {
           setUsers(data)
           setLoading(false)
@@ -37,16 +38,17 @@ function AppContent() {
 
     loadUsers()
   }, [])
-  const filteredUsers = showAll 
-    ? users 
+
+  const filteredUsers = showAll
+    ? users
     : users.filter((user) => {
-    const query = searchTerm.trim().toLowerCase()
-    return (
-      user.name.toLowerCase().includes(query) ||
-      user.username.toLowerCase().includes(query) ||
-      user.email.toLowerCase().includes(query)
-    )
-  })
+        const query = searchTerm.trim().toLowerCase()
+        return (
+          user.name.toLowerCase().includes(query) ||
+          user.username.toLowerCase().includes(query) ||
+          user.email.toLowerCase().includes(query)
+        )
+      })
 
   return (
     <div className="app-shell">
@@ -56,13 +58,17 @@ function AppContent() {
           {showAll
             ? 'Menampilkan semua data user'
             : searchTerm
-            ? `Pencarian: "${searchTerm}"` 
+            ? `Pencarian: "${searchTerm}"`
             : 'Data User diambil dari API https://jsonplaceholder.typicode.com/users'}
         </p>
         <p>
           {loading
             ? 'Memuat data...'
-            : error || (showAll ? `Total ${filteredUsers.length} user.` : (searchTerm.trim() ? `${filteredUsers.length} user ditemukan.` : 'Klik tombol "Tampilkan Semua Data" atau masukkan kata kunci untuk mencari user.'))}
+            : error || (showAll
+                ? `Total ${filteredUsers.length} user.`
+                : searchTerm.trim()
+                ? `${filteredUsers.length} user ditemukan.`
+                : 'Klik tombol "Tampilkan Semua Data" atau masukkan kata kunci untuk mencari user.')}
         </p>
       </section>
 
@@ -70,7 +76,7 @@ function AppContent() {
 
       <section className="user-grid">
         {loading ? (
-          /* Render 6 skeleton cards saat data masih di-fetch */
+          // Render 6 skeleton cards saat data masih di-fetch
           <>
             {[1, 2, 3, 4, 5, 6].map((n) => (
               <SkeletonCard key={n} />
@@ -78,12 +84,16 @@ function AppContent() {
           </>
         ) : showAll || searchTerm.trim() !== '' ? (
           filteredUsers.length > 0 ? (
-            filteredUsers.map((user) => <UserCard key={user.id} user={user} />)
+            filteredUsers.map((user, index) => (
+              <UserCard key={user.id} user={user} index={index} />
+            ))
           ) : (
             <NotFound searchTerm={searchTerm} />
           )
         ) : (
-          <div className="empty-state">Klik tombol "Tampilkan Semua Data" atau masukkan kata kunci untuk mencari user.</div>
+          <div className="empty-state">
+            Klik tombol "Tampilkan Semua Data" atau masukkan kata kunci untuk mencari user.
+          </div>
         )}
       </section>
 
@@ -99,6 +109,5 @@ function App() {
     </UserProvider>
   )
 }
-import SkeletonCard from './components/SkeletonCard'
+
 export default App
-import NotFound from './components/NotFound'

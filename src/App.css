@@ -565,3 +565,19 @@ button.active {
   from { transform: translateY(24px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+/* --- Animasi Muncul Kartu (Nomor 7) --- */
+@keyframes cardFadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-animate {
+  opacity: 0; /* Mulai dari transparan */
+  animation: cardFadeSlideIn 0.4s ease-out forwards;
+}
