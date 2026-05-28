@@ -1,43 +1,44 @@
 # React User Dashboard
 
-Aplikasi ini dibuat untuk memenuhi tugas React dengan materi:
-- Instalasi React (Vite)
+Yo! Ini aplikasi React yang saya bikin buat ngerjain tugas React.
+materi-materi ini:
+- Setup React pake Vite (lebih cepet dari create-react-app)
 - Component
-- useState
-- useEffect
-- useContext
-- useRef
+- useState, useEffect, useContext, useRef
+- Fetch API
 
-## Fitur yang dibangun
+## Fitur-fitur yang ada
 
-- Menampilkan data user dari API `https://jsonplaceholder.typicode.com/users`
-- Komponen terpisah: `Navbar`, `UserCard`, `Footer`
-- Interaktivitas: tombol `Like`, `Follow`, dan `Search`
-- Menggunakan React Hook: `useState`, `useEffect`, `useContext`, `useRef`
+- Ambil data user dari API `https://jsonplaceholder.typicode.com/users`
+- Punya komponen yang terpisah: `Navbar`, `UserCard`, `Footer`
+- Bisa di-interaksi: tombol `Like`, `Follow`, sama `Search`
+- Pake React Hooks yang penting: `useState`, `useEffect`, `useContext`, `useRef`
+- Bonus: tombol "Tampilkan Semua Data" buat liat semua user sekaligus
 
-## Struktur komponen
+## Struktur komponennya
 
 - `src/App.jsx`
-  - `App` membungkus aplikasi dengan `UserProvider`
-  - `AppContent` mengambil data dari API dan menampilkan daftar user
+  - `App` bungkus aplikasi dengan `UserProvider`
+  - `AppContent` ambil data dari API terus tampilin list user
 - `src/context/UserContext.jsx`
-  - Membuat konteks untuk `searchTerm`
+  - Bikin konteks untuk `searchTerm` sama `showAll`
 - `src/context/UserProvider.jsx`
-  - Menyediakan `searchTerm` dan `setSearchTerm` ke seluruh komponen
+  - Share `searchTerm`, `setSearchTerm`, `showAll`, sama `setShowAll` ke semua komponen
 - `src/components/Navbar.jsx`
-  - Search bar dengan `useRef` untuk fokus input dan penggunaan search
+  - Ada search bar yang bisa dicari pakai `useRef` buat auto-focus
+  - Plus tombol "Tampilkan Semua Data" buat liat user sekaligus
 - `src/components/UserCard.jsx`
-  - Menampilkan nama, email, username, dan city user
-  - Mendukung tombol `Like` dan `Follow`
+  - Tampilin nama, email, username, sama kota user
+  - Ada tombol `Like` sama `Follow` yang bisa diklik
 - `src/components/Footer.jsx`
-  - Footer sederhana sebagai penutup halaman
+  - Footer simpel buat penutup halaman
 
-## Penjelasan implementasi
+## Cara kerjanya
 
-### Fetch API
-Data user diambil dari API menggunakan `fetch` di dalam hook `useEffect`:
+### Ambil data dari API
+Data user diambil pake `fetch` di dalam `useEffect`:
 
-```js
+\`\`\`js
 useEffect(() => {
   async function loadUsers() {
     const response = await fetch('https://jsonplaceholder.typicode.com/users')
@@ -48,51 +49,47 @@ useEffect(() => {
 
   loadUsers()
 }, [])
-```
+\`\`\`
 
 ### Component
-- `Navbar`: menampilkan search input dan tombol untuk mencari atau mengosongkan search.
-- `UserCard`: menampilkan data user dan tombol `Like` / `Follow`.
-- `Footer`: menampilkan keterangan singkat di bagian bawah.
+- `Navbar`: punya search input, tombol search, clear, sama tombol tampilkan semua data
+- `UserCard`: tampilin data user dan tombol like/follow
+- `Footer`: info singkat di bawah
 
-### React Hook
-- `useState`: menyimpan state seperti `users`, `loading`, `error`, `liked`, dan `followed`.
-- `useEffect`: memanggil API saat komponen pertama kali dirender.
-- `useContext`: membagikan `searchTerm` dan `setSearchTerm` ke `Navbar` dan `AppContent`.
-- `useRef`: mengelola referensi input search di `Navbar` agar bisa fokus dan reset.
+### React Hooks yang dipakai
+- `useState`: nyimpen state kayak `users`, `loading`, `error`, `liked`, `followed`, dll
+- `useEffect`: panggil API pas component pertama kali di-render
+- `useContext`: share `searchTerm` dan `showAll` ke komponen lain
+- `useRef`: handle input search biar bisa fokus dan di-reset
 
-### Contoh potongan kode
+### Contoh kode potongannya
 
-```js
+\`\`\`js
 const searchRef = useRef(null)
 
 const handleSearch = () => {
   const value = searchRef.current?.value.trim() ?? ''
   setSearchTerm(value)
 }
-```
+\`\`\`
 
-## Cara menjalankan proyek
+## Cara menjalankan
 
-1. `npm install`
-2. `npm run dev`
+1. \`npm install\`
+2. \`npm run dev\`
 
-Buka alamat yang ditampilkan oleh Vite untuk melihat aplikasi berjalan.
+Terus buka URL yang muncul di terminal, siap!
 
-## Deploy (opsional)
+## Deploy (optional)
 
-Beberapa cara mudah untuk deploy aplikasi statis hasil build:
+Mau di-deploy? Ada beberapa cara yang gampang:
 
-- GitHub Pages (menggunakan `gh-pages`):
+- **GitHub Pages** (udah dikonfigurasi di repo ini):
 
-  1. Install package: `npm install --save-dev gh-pages`
-  2. Tambahkan script deploy (sudah ditambahkan di `package.json`):
+  \`\`\`bash
+  npm run deploy
+  \`\`\`
 
-```bash
-npm run predeploy
-npm run deploy
-```
+- **Vercel / Netlify**: Login, pilih repo, atur build command \`npm run build\`, publish folder \`dist\`. Done!
 
-- Vercel / Netlify: cukup login ke layanan, pilih repository, dan atur build command `npm run build` dan publish folder `dist`.
-
-Pilih metode yang nyaman. Jika butuh, saya bisa bantu buatkan workflow GitHub Actions untuk otomatis deploy.
+Gampang kan? Saya udah setup GitHub Actions juga biar otomatis deploy setiap push.
