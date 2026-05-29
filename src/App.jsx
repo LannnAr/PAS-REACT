@@ -54,23 +54,23 @@ function AppContent() {
     <div className="app-shell">
       <Navbar />
       <section className="summary">
-        <p>
-          {showAll
-            ? 'Menampilkan semua data user'
-            : searchTerm
-            ? `Pencarian: "${searchTerm}"`
-            : 'Data User diambil dari API https://jsonplaceholder.typicode.com/users'}
-        </p>
-        <p>
-          {loading
-            ? 'Memuat data...'
-            : error || (showAll
-                ? `Total ${filteredUsers.length} user.`
-                : searchTerm.trim()
-                ? `${filteredUsers.length} user ditemukan.`
-                : 'Klik tombol "Tampilkan Semua Data" atau masukkan kata kunci untuk mencari user.')}
-        </p>
-      </section>
+  <p>
+    {showAll
+      ? `Menampilkan semua user dari JSONPlaceholder API`
+      : searchTerm
+      ? `Hasil pencarian untuk: "${searchTerm}"`
+      : '👋 Selamat datang di React User Dashboard'}
+  </p>
+  <p>
+    {loading
+      ? 'Memuat data...'
+      : error || (showAll
+          ? `Total ${filteredUsers.length} user tersedia.`
+          : searchTerm.trim()
+          ? `${filteredUsers.length} user ditemukan.`
+          : 'Klik "Tampilkan Semua Data" atau ketik nama/email untuk mulai mencari.')}
+  </p>
+</section>
 
       {error && <div className="error-banner">{error}</div>}
 
@@ -92,8 +92,10 @@ function AppContent() {
           )
         ) : (
           <div className="empty-state">
-            Klik tombol "Tampilkan Semua Data" atau masukkan kata kunci untuk mencari user.
-          </div>
+          <div style={{ fontSize: '3rem' }}>🔍</div>
+          <h3>Mulai Eksplorasi</h3>
+          <p>Klik <strong>"Tampilkan Semua Data"</strong> untuk melihat semua user, atau ketik nama / email di kotak pencarian.</p>
+</div>
         )}
       </section>
 
