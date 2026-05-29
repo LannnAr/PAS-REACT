@@ -12,8 +12,10 @@ function AppContent() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [showSkeleton, setShowSkeleton] = useState(false)
   const { searchTerm, showAll } = useContext(UserContext)
 
+  // Fetch data satu kali saat mount
   useEffect(() => {
     async function loadUsers() {
       try {
@@ -24,11 +26,10 @@ function AppContent() {
         }
         const data = await response.json()
 
-        // Delay buatan agar skeleton loading terlihat
         setTimeout(() => {
           setUsers(data)
           setLoading(false)
-        }, 1000)
+        }, 200)
 
       } catch (err) {
         setError('Gagal mengambil data user. Silakan coba lagi.')
@@ -38,6 +39,15 @@ function AppContent() {
 
     loadUsers()
   }, [])
+
+  // Setiap kali showAll berubah jadi true, tampilkan skeleton sebentar
+  useEffect(() => {
+    if (showAll) {
+      setShowSkeleton(true)
+      const timer = setTimeout(() => setShowSkeleton(false), 444)
+      return () => clearTimeout(timer)
+    }
+  }, [showAll])
 
   const filteredUsers = showAll
     ? users
@@ -54,48 +64,47 @@ function AppContent() {
     <div className="app-shell">
       <Navbar />
       <section className="summary">
-  <p>
-    {showAll
-      ? `Menampilkan semua user dari JSONPlaceholder API`
-      : searchTerm
-      ? `Hasil pencarian untuk: "${searchTerm}"`
-      : '👋 Selamat datang di React User Dashboard'}
-  </p>
-  <p>
-    {loading
-      ? 'Memuat data...'
-      : error || (showAll
-          ? `Total ${filteredUsers.length} user tersedia.`
-          : searchTerm.trim()
-          ? `${filteredUsers.length} user ditemukan.`
-          : 'Klik "Tampilkan Semua Data" atau ketik nama/email untuk mulai mencari.')}
-  </p>
-</section>
+        <p>
+          {showAll
+            ? `Menampilkan semua user dari JSONPlaceholder API`
+            : searchTerm
+            ? `Hasil pencarian untuk: "${searchTerm}"`
+            : '👋 Selamat datang di React User Dashboard'}
+        </p>
+        <p>
+          {!showAll && searchTerm.trim() === ''
+            ? 'Klik "Tampilkan Semua Data" atau ketik nama/email untuk mulai mencari.'
+            : loading || showSkeleton
+            ? 'Memuat data...'
+            : error || (showAll
+                ? `Total ${filteredUsers.length} user tersedia.`
+                : `${filteredUsers.length} user ditemukan.`)}
+        </p>
+      </section>
 
       {error && <div className="error-banner">{error}</div>}
 
       <section className="user-grid">
-        {loading ? (
-          // Render 6 skeleton cards saat data masih di-fetch
+        {!showAll && searchTerm.trim() === '' ? (
+          
+          <div className="empty-state">
+            <div style={{ fontSize: '3rem' }}>🔍</div>
+            <h3>Mulai Eksplorasi</h3>
+            <p>Klik <strong>"Tampilkan Semua Data"</strong> untuk melihat semua user, atau ketik nama / email di kotak pencarian.</p>
+          </div>
+        ) : loading || showSkeleton ? (
+          // Skeleton muncul setiap kali tombol diklik
           <>
             {[1, 2, 3, 4, 5, 6].map((n) => (
               <SkeletonCard key={n} />
             ))}
           </>
-        ) : showAll || searchTerm.trim() !== '' ? (
-          filteredUsers.length > 0 ? (
-            filteredUsers.map((user, index) => (
-              <UserCard key={user.id} user={user} index={index} />
-            ))
-          ) : (
-            <NotFound searchTerm={searchTerm} />
-          )
+        ) : filteredUsers.length > 0 ? (
+          filteredUsers.map((user, index) => (
+            <UserCard key={user.id} user={user} index={index} />
+          ))
         ) : (
-          <div className="empty-state">
-          <div style={{ fontSize: '3rem' }}>🔍</div>
-          <h3>Mulai Eksplorasi</h3>
-          <p>Klik <strong>"Tampilkan Semua Data"</strong> untuk melihat semua user, atau ketik nama / email di kotak pencarian.</p>
-</div>
+          <NotFound searchTerm={searchTerm} />
         )}
       </section>
 

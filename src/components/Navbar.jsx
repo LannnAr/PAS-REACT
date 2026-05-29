@@ -12,11 +12,8 @@ function Navbar() {
   const handleLiveSearch = (e) => {
     const value = e.target.value
     setSearchTerm(value)
-    if (value.trim() !== '') {
-      setShowAll(false)
-    } else {
-      setShowAll(true)
-    }
+    // Saat mengetik, selalu matikan showAll agar mode pencarian aktif
+    setShowAll(false)
   }
 
   const handleSearch = () => {
@@ -29,7 +26,7 @@ function Navbar() {
     if (!searchRef.current) return
     searchRef.current.value = ''
     setSearchTerm('')
-    setShowAll(true)
+    setShowAll(false)
     searchRef.current.focus()
   }
 

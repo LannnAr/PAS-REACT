@@ -3,7 +3,7 @@ import UserContext from './UserContext'
 
 function UserProvider({ children }) {
   const [searchTerm, setSearchTerm] = useState('')
-  const [showAll, setShowAll] = useState(true)
+  const [showAll, setShowAll] = useState(false)
 
   // FIX: komentar diperbaiki — default tema adalah 'dark', bukan 'light'
   const [theme, setTheme] = useState(() => {
