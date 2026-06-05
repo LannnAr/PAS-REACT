@@ -812,3 +812,9 @@ button.active {
   display: inline-block;
   animation: floating 2s ease-in-out infinite;
 }
+
+.app-footer p:last-child {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(128, 128, 128, 0.3);
+}
