@@ -801,3 +801,14 @@ button.active {
   background: #005c4b;
   color: #e9f5e9;
 }
+
+@keyframes floating {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+.icon-float {
+  display: inline-block;
+  animation: floating 2s ease-in-out infinite;
+}

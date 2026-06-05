@@ -88,7 +88,7 @@ function AppContent() {
         {!showAll && searchTerm.trim() === '' ? (
           
           <div className="empty-state">
-            <div style={{ fontSize: '3rem' }}>🔍</div>
+            <div className="icon-float" style={{ fontSize: '3rem' }}>🔍</div>
             <h3>Mulai Eksplorasi</h3>
             <p>Klik <strong>"Tampilkan Semua Data"</strong> untuk melihat semua user, atau ketik nama / email di kotak pencarian.</p>
           </div>
