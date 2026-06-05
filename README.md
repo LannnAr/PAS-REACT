@@ -281,6 +281,9 @@ Berikut adalah daftar lengkap kategori pertanyaan yang dapat dijawab oleh Bot AI
 
 Bot juga memiliki **12+ respons default** yang generic namun tetap terasa personal jika pertanyaan tidak cocok dengan kategori manapun.
 
+## 📝 Catatan Kontribusi
+Terdapat akun kedua bernama **taufikrofiq-coder** di dalam daftar kontributor di github saya dikarenakan kelalaian konfigurasi pada perangkat. Laptop yang saya gunakan terkadang dipakai bersama dengan ayah saya, dan akun Git milik beliau di Visual Studio Code belum sempat dialihkan kembali saat saya melanjutkan pengerjaan proyek ini. Oleh karena itu, seluruh *commit* dari kedua akun tersebut adalah hasil pengerjaan saya ya :D
+
 
 SEKIAN DARI SAYA TERIMAKASIH
 
